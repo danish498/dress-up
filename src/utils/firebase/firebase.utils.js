@@ -1,13 +1,3 @@
-## Lessons Learned
-
-I have learned some concept about firebase/firestore.
-How to set-up the firestore in the app and at google.console.
-
-#### 1st part:
-
-sign in with the Google popup
-
-```javascript
 import { initializeApp } from 'firebase/app';
 
 import {
@@ -16,6 +6,8 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from 'firebase/auth';
+
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCHFY-Iquf1SnOoBcQcab_5yjq5MEtUl7o',
@@ -37,17 +29,8 @@ provider.setCustomParameters({
 
 export const auth = getAuth(); //
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
-```
 
-#### 2st part:
-
-take the data and store into the firebaseStore
-
-```javascript
-
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
-
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 export const db = getFirestore();
 
 export const createUserDocumentFromAuth = async (userAuth) => {
@@ -57,27 +40,28 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
   const userSnapshot = await getDoc(userDocRef);
 
-  // please do check the repositry to understand better:
+  // console.log(userSnapshot);
+  // console.log(userSnapshot.exists());  // checked weather that data is available or not
 
+  // if user data does not exist
+  // crearte / set the documents with the data from userAuth in my collection
 
+  // if user data does not exist
 
-```
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
 
-#### Helper elements
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+      });
+    } catch (error) {
+      console.log('error creating the user', error.message);
+    }
+  }
 
-```javascript
-const logGoogleUser = async () => {
-  const { user } = await signInWithGooglePopup();
-  const userDocRef = createUserDocumentFromAuth(user);
-  // console.log(userDocRef);
+  return userDocRef;
 };
-```
-
-## 🛠 Skills
-
-Javascript, HTML, CSS, Reactjs, Redux, Git and GitHub, Bootstrap, Sass,
-MaterialUI, Node js,
-
-## 🚀 About Me
-
-My name is Daanish Noor. I have complited MCA in 2021, for me programing is my passion(PP).
