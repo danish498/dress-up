@@ -1,42 +1,22 @@
 ## Lessons Learned
 
-This is also a firebase auth and database but with email and password, here I have learn how to initiate the email and pass log in field and store these user data to firebase database.
+In this secrion I have learnt about how to create componets, like button component and use them, where it require.
 
 ```javacript
 
-// in firebase utils
 
-export const createAuthUsersWithEmailAndPassword = async (email, password) => {
-  if (!email || !password) return;
-
-  return await createUserWithEmailAndPassword(auth, email, password);
+const BUTTON_TYPE_CLASSES = {
+  google: 'google-sign-in',
+  inverted: 'inverted',
 };
 
-/// some change in firebase store bd instance
-
-
-const handlerSubmit = async (event) => {
-    event.preventDefault();
-    if (password !== confirmPassword) {
-      alert(`password do not match`);
-      return;
-    }
-
-    try {
-      const { user } = await createAuthUsersWithEmailAndPassword(
-        email,
-        password
-      );
-
-      await createUserDocumentFromAuth(user, { displayName }); /// this is for the firebase database
-    } catch (error) {
-      if (error.code === `auth/email-already-in-use`) {
-        alert(`Can't create user, email already in use!`);
-      } else {
-        console.log('user creation encounter an errro', error);
-      }
-    }
-  };
+const Button = ({ children, buttonType, ...otherProperties }) => {
+  return (
+    <button className={`button-container ${BUTTON_TYPE_CLASSES[buttonType]}`}>
+      {children}
+    </button>
+  );
+};
 
 ```
 
