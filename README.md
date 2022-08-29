@@ -1,26 +1,42 @@
 ## Lessons Learned
 
-Sign-up form - basically I learned, how to store the all value of the form, like name, password, emial at once.
+This is also a firebase auth and database but with email and password, here I have learn how to initiate the email and pass log in field and store these user data to firebase database.
 
 ```javacript
 
-const defaultFormFields = {
-  displayName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+// in firebase utils
+
+export const createAuthUsersWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-const [formFields, setFormFields] = useState(defaultFormFields);
+/// some change in firebase store bd instance
 
-const handelChnage = (event) => {
-    // console.log(event.target);
 
-    const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value }); // tricky***
-    console.log(name, value);
+const handlerSubmit = async (event) => {
+    event.preventDefault();
+    if (password !== confirmPassword) {
+      alert(`password do not match`);
+      return;
+    }
+
+    try {
+      const { user } = await createAuthUsersWithEmailAndPassword(
+        email,
+        password
+      );
+
+      await createUserDocumentFromAuth(user, { displayName }); /// this is for the firebase database
+    } catch (error) {
+      if (error.code === `auth/email-already-in-use`) {
+        alert(`Can't create user, email already in use!`);
+      } else {
+        console.log('user creation encounter an errro', error);
+      }
+    }
   };
-
 
 ```
 
