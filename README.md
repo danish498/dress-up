@@ -5,18 +5,6 @@ In this secrion I have learnt about how to create componets, like button compone
 ```javacript
 
 
-const BUTTON_TYPE_CLASSES = {
-  google: 'google-sign-in',
-  inverted: 'inverted',
-};
-
-const Button = ({ children, buttonType, ...otherProperties }) => {
-  return (
-    <button className={`button-container ${BUTTON_TYPE_CLASSES[buttonType]}`}>
-      {children}
-    </button>
-  );
-};
 
 ```
 
